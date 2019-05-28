@@ -398,6 +398,31 @@ logsPersistence:
   size: 1Gi
 
 ##
+## Storage configuration for plugins
+pluginsPersistence:
+  ##
+  ## enable persistance storage
+  enabled: false
+  ##
+  ## Existing claim to use
+  # existingClaim: nil
+  ##
+  ## Persistent Volume Storage Class
+  ## If defined, storageClassName: <storageClass>
+  ## If set to "-", storageClassName: "", which disables dynamic provisioning
+  ## If undefined (the default) or set to null, no storageClassName spec is
+  ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+  ##   GKE, AWS & OpenStack)
+  ##
+  ## A configuration for shared plugin storage requires a `storageClass` that
+  ## supports the `ReadWriteMany` accessMode, such as NFS or AWS EFS.
+  # storageClass: default
+  accessMode: ReadWriteOnce
+  ##
+  ## Persistant storage size request
+  size: 1Gi
+
+##
 ## Configure DAGs deployment and update
 dags:
   ##
@@ -437,6 +462,11 @@ dags:
 ## Configure logs
 logs:
   path: /usr/local/airflow/logs
+
+##
+## Configure plugins
+plugins:
+  path: /usr/local/airflow/plugins
 
 ##
 ##  Enable RBAC

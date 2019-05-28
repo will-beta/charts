@@ -111,6 +111,10 @@ spec:
             - name: dags-data
               mountPath: {{ .Values.dags.path }}
           {{- end }}
+          {{- if .Values.pluginsPersistence.enabled }}
+            - name: plugins-data
+              mountPath: {{ .Values.plugins.path }}
+          {{- end }}
           {{- range .Values.airflow.extraConfigmapMounts }}
             - name: {{ .name }}
               mountPath: {{ .mountPath }}
@@ -169,6 +173,11 @@ spec:
             claimName: {{ .Values.persistence.existingClaim | default (include "airflow.fullname" .) }}
         {{- else }}
           emptyDir: {}
+        {{- end }}
+        {{- if .Values.pluginsPersistence.enabled }}
+        - name: plugins-data
+          persistentVolumeClaim:
+            claimName: {{ .Values.pluginsPersistence.existingClaim | default (printf "%s-plugins" (include "airflow.fullname" . | trunc 58 )) }}
         {{- end }}
         {{- if .Values.dags.initContainer.enabled }}
         - name: git-clone
